@@ -1,0 +1,79 @@
+/*
+navu form add name : img
+img.aspx.cs no code
+and 
+img design form banavu ane ama buttn ni event add karvi 
+*/
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Windows;
+using System.IO;
+
+
+
+namespace dispimage
+{
+    public partial class image : System.Web.UI.Page
+    {
+        //connection 
+        string connectionstring = @"Data Source=DESKTOP-CCNHMQU\SQLEXPRESS;Initial Catalog=dispimg;Integrated Security=True";
+        protected void Page_Load(object sender, EventArgs e)
+        {
+           
+
+        }
+
+        //insert data
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection sqlcon = new SqlConnection(connectionstring))
+                    if (FileUpload1.HasFile)
+                    {
+                        sqlcon.Open();
+                        string query = "insert into img (bookid , price, bookname , image) values (@bookid , @price, @bookname , @image)  ";
+                        string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
+
+                        SqlCommand conn = new SqlCommand(query, sqlcon);
+
+                        FileUpload1.SaveAs(Server.MapPath("~/image"+filename) + System.IO.Path.GetFileName(FileUpload1.FileName));
+
+
+                        FileUpload1.SaveAs(Server.MapPath("image/" + filename));
+
+                    //string linkpath = "~/image" + System.IO.Path.GetFileName(FileUpload1.FileName);
+
+                       
+                       
+
+                        conn.Parameters.AddWithValue("@bookid", TextBox1.Text);
+                        conn.Parameters.AddWithValue("@price", TextBox2.Text);
+                        conn.Parameters.AddWithValue("@bookname", TextBox3.Text);
+                       // conn.Parameters.AddWithValue("@image", linkpath);
+
+                       conn.Parameters.AddWithValue("@image", "images/" + filename);
+                        conn.ExecuteNonQuery();
+                       
+
+                        sqlcon.Close();  
+                    }
+                MessageBox.Show("iserted data ");
+            }
+            
+         
+             catch 
+            {
+                MessageBox.Show("error ");
+            }
+        }
+    }
+}
