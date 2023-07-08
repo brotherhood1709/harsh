@@ -40,9 +40,12 @@ namespace dispimage
                     if (FileUpload1.HasFile)
                     {
                         sqlcon.Open();
-                        string query = "insert into img (bookid , price, bookname , image) values (@bookid , @price, @bookname , @image)  ";
+                        //string query = "insert into img (bookid , price, bookname , image) values (@bookid , @price, @bookname , @image)  ";
                         string filename = Path.GetFileName(FileUpload1.PostedFile.FileName);
 
+                        // change this query its a new 
+                        string query = "insert into img values ('"+TextBox1.Text+"' , '"+TextBox2.Text+ "' , '"+TextBox3.Text+ "' , '"+FileUpload1.HasFile+"') ";
+                        
                         SqlCommand conn = new SqlCommand(query, sqlcon);
 
                         FileUpload1.SaveAs(Server.MapPath("~/image"+filename) + System.IO.Path.GetFileName(FileUpload1.FileName));
@@ -55,9 +58,9 @@ namespace dispimage
                        
                        
 
-                        conn.Parameters.AddWithValue("@bookid", TextBox1.Text);
-                        conn.Parameters.AddWithValue("@price", TextBox2.Text);
-                        conn.Parameters.AddWithValue("@bookname", TextBox3.Text);
+                       // conn.Parameters.AddWithValue("@bookid", TextBox1.Text);
+                       // conn.Parameters.AddWithValue("@price", TextBox2.Text);
+                        //conn.Parameters.AddWithValue("@bookname", TextBox3.Text);
                        // conn.Parameters.AddWithValue("@image", linkpath);
 
                        conn.Parameters.AddWithValue("@image", "images/" + filename);
